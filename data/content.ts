@@ -4,7 +4,7 @@ export const PERSONAL_INFO = {
   name: "Faisal Mahmud",
   role: "Fullstack Developer & Designer",
   location: "Dhaka, Bangladesh",
-  email: "hello@faisalmahmud.com", // Replace with yours
+  email: "faisalmahmud1513@gmail.com", // Replace with yours
   availability: "Available for Freelance • 2026",
   bio: "I bridge the gap between complex backend architecture and high-fidelity user interfaces. Specializing in Next.js, AI agent orchestration, and interactive game development.",
 };
