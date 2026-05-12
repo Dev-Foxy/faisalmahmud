@@ -62,9 +62,23 @@ export default function ProjectsPage() {
         {/* Projects Grid */}
         <motion.div layout className="grid grid-cols-1 gap-32 md:gap-48">
           <AnimatePresence mode="popLayout">
-            {filteredProjects.map((project) => (
-              <ProjectCard key={project.id} project={project} />
-            ))}
+            {filteredProjects.map((project, i) => {
+              // Option A: Use the current filtered position (1st visible is 01, 2nd is 02)
+              const currentIndex = i;
+
+              // Option B: Use the original position from the data (always stays 05 even if filtered)
+              const originalIndex = PROJECTS.findIndex(
+                (p) => p.id === project.id,
+              );
+
+              return (
+                <ProjectCard
+                  key={project.id}
+                  project={project}
+                  index={currentIndex} // Change to originalIndex if you prefer static numbering
+                />
+              );
+            })}
           </AnimatePresence>
         </motion.div>
 

@@ -25,7 +25,7 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
       className="group relative w-full border-b border-neutral-100 dark:border-neutral-900 pb-20 lg:pb-32 last:border-0"
     >
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-start">
-        {/* Left Side: Index & Identity (The Anchor) */}
+        {/* Left Side: Index & Identity */}
         <div className="hidden lg:flex lg:col-span-1 flex-col pt-2">
           <span className="font-mono text-sm font-bold tracking-tighter text-neutral-300 dark:text-neutral-700">
             {displayIndex}
@@ -58,13 +58,11 @@ const ProjectCard = ({ project, index }: ProjectCardProps) => {
                 fill
                 className="object-cover grayscale group-hover/img:grayscale-0 transition-all duration-1000"
               />
-              {/* Subtle Scanline Overlay for Tech Vibe */}
               <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.05)_50%),linear-gradient(90deg,rgba(255,0,0,0.02),rgba(0,255,0,0.01),rgba(0,0,255,0.02))] bg-size-[100%_2px,3px_100%] pointer-events-none opacity-0 group-hover/img:opacity-100 transition-opacity" />
             </motion.div>
           </Link>
 
-          {/* Floating Category Label */}
-          <div className="absolute -bottom-4 -right-4 bg-black dark:bg-white text-white dark:text-black px-4 py-2 text-[10px] font-bold uppercase tracking-[0.2em] shadow-xl">
+          <div className="absolute -bottom-4 -right-4 bg-black dark:bg-white text-white dark:text-black px-4 py-2 text-[10px] font-bold uppercase tracking-[0.2em] shadow-xl z-10">
             {isPortrait ? "Experimental" : "Production"}
           </div>
         </div>
