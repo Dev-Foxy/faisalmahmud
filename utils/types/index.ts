@@ -25,6 +25,25 @@ export interface Project {
   imageOrientation: ImageOrientation;
   liveUrl?: string;
   githubUrl?: string;
+  /** Short category shown on cards, e.g. "E-commerce" */
+  category?: string;
+  year?: string;
+  /** Background colour of the media stage behind the screenshot */
+  color?: string;
+  /** Text colour used on the stage (for placeholder titles) */
+  ink?: string;
+}
+
+export interface Service {
+  title: string;
+  description: string;
+  tags: string[];
+}
+
+export interface ProcessStep {
+  title: string;
+  duration: string;
+  description: string;
 }
 
 /**

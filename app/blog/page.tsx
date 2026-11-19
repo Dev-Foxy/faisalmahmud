@@ -7,7 +7,7 @@ import { ArrowUpRight } from "lucide-react";
 
 const BlogPage = () => {
   return (
-    <main className="min-h-screen bg-white dark:bg-black text-black dark:text-white pb-24">
+    <main className="min-h-screen pb-24">
       {/* --- HERO SECTION --- */}
       <section className="container-custom pt-32 pb-20 border-b border-neutral-100 dark:border-neutral-900">
         <motion.div
@@ -20,7 +20,7 @@ const BlogPage = () => {
           </span>
           <h1 className="text-6xl md:text-[10vw] font-bold tracking-tighter leading-[0.8] uppercase">
             The <br />
-            <span className="text-neutral-300 dark:text-neutral-800 italic font-light">
+            <span className="font-serif font-normal normal-case tracking-tight text-brand italic font-light">
               Journal
             </span>
           </h1>

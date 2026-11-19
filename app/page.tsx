@@ -1,19 +1,21 @@
 import Hero from "@/components/home/Hero";
-import About from "@/components/home/About";
-import Skills from "@/components/home/Skills";
+import Marquee from "@/components/home/Marquee";
 import Projects from "@/components/home/Projects";
-import Blogs from "@/components/home/Blogs";
-import Contact from "@/components/home/Contact";
+import Services from "@/components/home/Services";
+import About from "@/components/home/About";
+import Process from "@/components/home/Process";
 
 export default function Home() {
   return (
-    <main className="flex flex-col gap-y-20 md:gap-y-40 pb-20">
-      <Hero />
-      <About />
-      <Skills />
+    <main className="flex flex-col gap-y-28 md:gap-y-44 pb-28 md:pb-44">
+      <div>
+        <Hero />
+        <Marquee />
+      </div>
       <Projects />
-      <Blogs />
-      <Contact />
+      <Services />
+      <About />
+      <Process />
     </main>
   );
 }

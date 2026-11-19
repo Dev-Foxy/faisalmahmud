@@ -1,128 +1,112 @@
 "use client";
-import React from "react";
+import React, { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { Project } from "@/utils/types";
 import { cn } from "@/lib/utils";
+import { EASE } from "@/components/shared/motion";
 
 interface ProjectCardProps {
   project: Project;
   index: number;
+  /** Wide 16:9 stage, used for the lead project */
+  featured?: boolean;
 }
 
-const ProjectCard = ({ project, index }: ProjectCardProps) => {
-  const isPortrait = project.imageOrientation === "portrait";
-  const displayIndex = (index + 1).toString().padStart(2, "0");
+export default function ProjectCard({ project, index, featured = false }: ProjectCardProps) {
+  const ref = useRef<HTMLAnchorElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+  const y = useTransform(scrollYProgress, [0, 1], ["-6%", "6%"]);
+  const image = project.images[0];
+  const ink = project.ink ?? "#0f0f0e";
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 60 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-15%" }}
-      transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-      className="group relative w-full border-b border-neutral-100 dark:border-neutral-900 pb-20 lg:pb-32 last:border-0"
+      viewport={{ once: true, margin: "-10%" }}
+      transition={{ duration: 1.1, ease: EASE, delay: featured ? 0 : (index % 2) * 0.1 }}
+      className={cn(featured && "md:col-span-2")}
     >
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-start">
-        {/* Left Side: Index & Identity */}
-        <div className="hidden lg:flex lg:col-span-1 flex-col pt-2">
-          <span className="font-mono text-sm font-bold tracking-tighter text-neutral-300 dark:text-neutral-700">
-            {displayIndex}
-          </span>
-          <div className="h-24 w-px bg-neutral-100 dark:bg-neutral-900 mt-4 mx-auto" />
-        </div>
-
-        {/* Middle: The Media Exhibit */}
+      <Link
+        ref={ref}
+        href={`/projects/${project.id}`}
+        data-cursor="View"
+        className="group block"
+      >
         <div
           className={cn(
-            "relative lg:col-span-6 order-2 lg:order-0",
-            isPortrait ? "max-w-105" : "w-full",
+            "relative overflow-hidden rounded-2xl",
+            featured ? "aspect-[4/5] sm:aspect-[16/10] lg:aspect-[16/8]" : "aspect-[4/5]",
           )}
+          style={{ backgroundColor: project.color ?? "var(--surface)" }}
         >
-          <Link
-            href={`/projects/${project.id}`}
-            className="block relative overflow-hidden rounded-sm group/img"
+          <motion.div
+            style={{ y }}
+            className="absolute inset-0 flex items-center justify-center p-[9%]"
           >
-            <motion.div
-              whileHover={{ scale: 1.03 }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className={cn(
-                "relative bg-neutral-100 dark:bg-neutral-900",
-                isPortrait ? "aspect-3/4" : "aspect-video",
-              )}
-            >
-              <Image
-                src={project.images[0].src}
-                alt={project.images[0].alt}
-                fill
-                className="object-cover grayscale group-hover/img:grayscale-0 transition-all duration-1000"
-              />
-              <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.05)_50%),linear-gradient(90deg,rgba(255,0,0,0.02),rgba(0,255,0,0.01),rgba(0,0,255,0.02))] bg-size-[100%_2px,3px_100%] pointer-events-none opacity-0 group-hover/img:opacity-100 transition-opacity" />
-            </motion.div>
-          </Link>
+            {image ? (
+              <div className="relative h-full w-full transition-transform duration-[1.2s] ease-expo group-hover:scale-[1.04]">
+                <Image
+                  src={image.src}
+                  alt={image.alt}
+                  fill
+                  sizes={featured ? "100vw" : "(max-width: 768px) 100vw, 50vw"}
+                  className="object-contain drop-shadow-[0_30px_40px_rgba(0,0,0,0.35)]"
+                />
+              </div>
+            ) : (
+              <span
+                className="font-serif italic text-[clamp(3rem,9vw,8rem)] leading-none tracking-[-0.03em] transition-transform duration-[1.2s] ease-expo group-hover:scale-[1.06]"
+                style={{ color: ink }}
+              >
+                {project.name}
+              </span>
+            )}
+          </motion.div>
 
-          <div className="absolute -bottom-4 -right-4 bg-black dark:bg-white text-white dark:text-black px-4 py-2 text-[10px] font-bold uppercase tracking-[0.2em] shadow-xl z-10">
-            {isPortrait ? "Experimental" : "Production"}
+          <div
+            className="absolute left-5 top-5 hidden sm:flex gap-2 label"
+            style={{ color: ink }}
+          >
+            {project.techStack.slice(0, 3).map((t) => (
+              <span
+                key={t}
+                className="rounded-full border px-3 py-1.5 backdrop-blur-sm"
+                style={{ borderColor: `${ink}33` }}
+              >
+                {t}
+              </span>
+            ))}
           </div>
         </div>
 
-        {/* Right Side: Editorial Content */}
-        <div className="lg:col-span-5 flex flex-col pt-0 lg:pt-10">
-          <div className="flex items-center gap-3 mb-6">
-            <span className="text-[10px] font-mono uppercase tracking-widest text-neutral-400">
-              Stack /
-            </span>
-            <div className="flex flex-wrap gap-2">
-              {project.techStack.slice(0, 3).map((tech) => (
-                <span
-                  key={tech}
-                  className="text-[10px] font-bold uppercase tracking-widest"
-                >
-                  {tech}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          <Link
-            href={`/projects/${project.id}`}
-            className="group/title inline-block"
-          >
-            <h3 className="text-5xl md:text-7xl font-bold tracking-tighter leading-[0.85] mb-8 wrap-break-word">
-              {project.name.split(" ").map((word, i) => (
-                <span
-                  key={i}
-                  className="block group-hover/title:italic transition-all duration-500"
-                >
-                  {word}
-                </span>
-              ))}
+        <div className="mt-5 flex items-start justify-between gap-6">
+          <div>
+            <h3 className="text-2xl md:text-4xl font-medium tracking-[-0.04em] leading-tight">
+              {project.name}
             </h3>
-          </Link>
-
-          <p className="text-lg text-neutral-500 dark:text-neutral-400 leading-relaxed max-w-sm mb-10">
-            {project.description}
-          </p>
-
-          <Link
-            href={`/projects/${project.id}`}
-            className="group/btn flex items-center gap-6 w-fit"
-          >
-            <div className="relative p-5 rounded-full border border-black/10 dark:border-white/10 group-hover/btn:bg-black dark:group-hover/btn:bg-white transition-all duration-500">
-              <ArrowUpRight
-                size={24}
-                className="group-hover/btn:text-white dark:group-hover/btn:text-black transition-colors"
-              />
-            </div>
-            <span className="text-xs font-bold uppercase tracking-[0.4em] border-b border-transparent group-hover/btn:border-black dark:group-hover/btn:border-white transition-all">
-              View Case
+            <p className="mt-2 max-w-xl text-muted-foreground leading-snug line-clamp-2">
+              {project.description}
+            </p>
+          </div>
+          <div className="flex shrink-0 items-center gap-4">
+            <span className="hidden sm:block label text-muted-foreground text-right">
+              {project.category}
+              <br />
+              {project.year}
             </span>
-          </Link>
+            <span className="grid h-12 w-12 place-items-center rounded-full border border-line transition-colors duration-500 group-hover:bg-brand group-hover:border-brand group-hover:text-brand-foreground">
+              <ArrowUpRight size={18} className="transition-transform duration-500 group-hover:rotate-45" />
+            </span>
+          </div>
         </div>
-      </div>
+      </Link>
     </motion.div>
   );
-};
-
-export default ProjectCard;
+}

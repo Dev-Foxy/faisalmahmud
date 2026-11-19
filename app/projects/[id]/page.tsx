@@ -6,13 +6,16 @@ import { useParams, notFound } from "next/navigation";
 import { motion } from "framer-motion";
 import { ArrowLeft, Globe, Github } from "lucide-react";
 import { PROJECTS } from "@/data/content";
-import { cn } from "@/lib/utils";
 
 export default function ProjectDetail() {
   const params = useParams();
   const project = PROJECTS.find((p) => p.id === params.id);
 
   if (!project) notFound();
+
+  const currentIndex = PROJECTS.findIndex((p) => p.id === project.id);
+  const nextProject = PROJECTS[(currentIndex + 1) % PROJECTS.length];
+  const cover = project.images[0];
 
   return (
     <main className="min-h-screen pt-32 pb-20">
@@ -49,7 +52,8 @@ export default function ProjectDetail() {
                 <a
                   href={project.liveUrl}
                   target="_blank"
-                  className="group flex items-center gap-4 px-8 py-4 bg-black dark:bg-white text-white dark:text-black rounded-full font-bold text-xs uppercase tracking-widest hover:scale-105 transition-transform"
+                  rel="noreferrer"
+                  className="group flex items-center gap-4 px-8 py-4 bg-brand text-brand-foreground rounded-full font-bold text-xs uppercase tracking-widest hover:scale-105 transition-transform"
                 >
                   <Globe size={16} />
                   Live Site
@@ -64,20 +68,27 @@ export default function ProjectDetail() {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1.2, delay: 0.2 }}
-          className={cn(
-            "relative overflow-hidden rounded-sm bg-neutral-100 dark:bg-neutral-900 mb-32",
-            project.imageOrientation === "portrait"
-              ? "aspect-4/5 max-w-4xl mx-auto"
-              : "aspect-video",
-          )}
+          className="relative overflow-hidden rounded-2xl mb-32 aspect-[4/5] md:aspect-video"
+          style={{ backgroundColor: project.color ?? "var(--surface)" }}
         >
-          <Image
-            src={project.images[0].src}
-            alt={project.images[0].alt}
-            fill
-            priority
-            className="object-cover"
-          />
+          {cover ? (
+            <div className="absolute inset-[8%]">
+              <Image
+                src={cover.src}
+                alt={cover.alt}
+                fill
+                priority
+                className="object-contain drop-shadow-[0_30px_40px_rgba(0,0,0,0.35)]"
+              />
+            </div>
+          ) : (
+            <div
+              className="absolute inset-0 grid place-items-center font-serif italic text-[clamp(3rem,10vw,9rem)]"
+              style={{ color: project.ink }}
+            >
+              {project.name}
+            </div>
+          )}
         </motion.div>
 
         {/* Technical Deep Dive Section */}
@@ -118,7 +129,7 @@ export default function ProjectDetail() {
                 <h3 className="text-[10px] uppercase tracking-widest text-neutral-400 mb-4">
                   Year
                 </h3>
-                <p className="text-sm font-bold">2024 — 2026</p>
+                <p className="text-sm font-bold">{project.year ?? "2024 — 2026"}</p>
               </div>
             </div>
           </div>
@@ -155,9 +166,9 @@ export default function ProjectDetail() {
           <p className="text-xs font-mono uppercase tracking-[0.4em] text-neutral-400 mb-6">
             Next Project
           </p>
-          <Link href={`/projects/ai-bhaia`} className="group inline-block">
-            <h2 className="text-5xl md:text-8xl font-bold tracking-tighter group-hover:italic transition-all">
-              AI Bhaia
+          <Link href={`/projects/${nextProject.id}`} data-cursor="Next" className="group inline-block pb-20">
+            <h2 className="text-5xl md:text-8xl font-medium tracking-[-0.05em] group-hover:font-serif group-hover:italic group-hover:text-brand transition-colors">
+              {nextProject.name}
             </h2>
           </Link>
         </div>

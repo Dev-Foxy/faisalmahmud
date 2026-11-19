@@ -60,22 +60,18 @@ export default function ProjectsPage() {
         </header>
 
         {/* Projects Grid */}
-        <motion.div layout className="grid grid-cols-1 gap-32 md:gap-48">
+        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-16 md:gap-y-24">
           <AnimatePresence mode="popLayout">
             {filteredProjects.map((project, i) => {
               // Option A: Use the current filtered position (1st visible is 01, 2nd is 02)
               const currentIndex = i;
 
-              // Option B: Use the original position from the data (always stays 05 even if filtered)
-              const originalIndex = PROJECTS.findIndex(
-                (p) => p.id === project.id,
-              );
-
               return (
                 <ProjectCard
                   key={project.id}
                   project={project}
-                  index={currentIndex} // Change to originalIndex if you prefer static numbering
+                  index={currentIndex}
+                  featured={currentIndex === 0}
                 />
               );
             })}
@@ -92,7 +88,7 @@ export default function ProjectsPage() {
             Have a unique idea?
           </h3>
           <a
-            href="/#contact"
+            href="/contact"
             className="text-sm font-mono uppercase tracking-[0.3em] underline decoration-neutral-300 underline-offset-8 hover:text-neutral-500 transition-colors"
           >
             Start a project with me

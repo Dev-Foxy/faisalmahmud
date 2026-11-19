@@ -29,7 +29,7 @@ const BlogPostPage = () => {
   }
 
   return (
-    <main className="min-h-screen bg-white dark:bg-black text-black dark:text-white pb-32">
+    <main className="min-h-screen pb-32">
       {/* --- NAVIGATION BAR --- */}
       <nav className="fixed top-0 left-0 w-full z-50 mix-blend-difference px-8 py-6 flex justify-between items-center">
         <button

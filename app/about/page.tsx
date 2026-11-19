@@ -17,7 +17,7 @@ const AboutPage = () => {
   ];
 
   return (
-    <main className="min-h-screen bg-white dark:bg-black text-black dark:text-white pb-20">
+    <main className="min-h-screen pb-20">
       {/* --- HERO SECTION --- */}
       <section className="container-custom pt-32 pb-20">
         <motion.div
@@ -30,7 +30,7 @@ const AboutPage = () => {
           </span>
           <h1 className="text-6xl md:text-[8vw] font-bold tracking-tighter leading-[0.8] uppercase mb-12">
             Engineering <br />
-            <span className="text-neutral-300 dark:text-neutral-800 italic">
+            <span className="font-serif font-normal normal-case tracking-tight text-brand italic">
               Evolution
             </span>
           </h1>

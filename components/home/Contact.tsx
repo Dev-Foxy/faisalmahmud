@@ -75,7 +75,7 @@ const Contact = () => {
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.4, duration: 0.8 }}
-                className="text-neutral-300 dark:text-neutral-800 italic block"
+                className="font-serif font-normal normal-case tracking-tight text-brand italic block"
               >
                 your vision
               </motion.span>
@@ -180,7 +180,7 @@ const Contact = () => {
 
             <button
               disabled={status === "loading" || status === "success"}
-              className="group relative w-full bg-black dark:bg-white text-white dark:text-black py-6 rounded-2xl font-bold uppercase tracking-[0.2em] text-xs overflow-hidden disabled:opacity-70 disabled:cursor-not-allowed"
+              className="group relative w-full bg-foreground text-background py-6 rounded-2xl font-bold uppercase tracking-[0.2em] text-xs overflow-hidden disabled:opacity-70 disabled:cursor-not-allowed"
             >
               <AnimatePresence mode="wait">
                 {status === "loading" ? (
@@ -220,7 +220,7 @@ const Contact = () => {
 
               {/* Button background animation */}
               <motion.div
-                className="absolute inset-0 bg-neutral-800 dark:bg-neutral-200"
+                className="absolute inset-0 bg-brand"
                 initial={{ x: "-100%" }}
                 whileHover={status === "idle" ? { x: 0 } : {}}
                 transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
