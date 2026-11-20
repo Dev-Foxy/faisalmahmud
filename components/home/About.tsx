@@ -4,12 +4,9 @@ import Link from "next/link";
 import { animate, useInView } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { ScrollText, FadeUp, RollText } from "@/components/shared/motion";
+import { HOME } from "@/content/site";
 
-const STATS = [
-  { value: 20, suffix: "+", label: "Projects delivered" },
-  { value: 5, suffix: "+", label: "Years building for the web" },
-  { value: 17, suffix: "+", label: "Languages shipped in one product" },
-];
+const STATS = HOME.stats;
 
 function Counter({ to, suffix }: { to: number; suffix: string }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -49,7 +46,7 @@ export default function About() {
         <div className="lg:col-span-9">
           <ScrollText
             className="text-[clamp(1.75rem,3.6vw,3.5rem)] font-medium leading-[1.08] tracking-[-0.035em]"
-            text="I bridge the gap between thoughtful design and solid engineering. From luxury e-commerce to AI-powered learning platforms, I care about one thing: products that look exceptional, load instantly and move your numbers."
+            text={HOME.about}
           />
 
           <FadeUp className="mt-12">

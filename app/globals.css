@@ -151,3 +151,71 @@ html.lenis body {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Markdown content (projects & blog) */
+.md-body {
+  font-size: 1.125rem;
+  line-height: 1.7;
+  color: var(--muted-foreground);
+  overflow-wrap: anywhere;
+}
+.md-body > * + * {
+  margin-top: 1.25em;
+}
+.md-body > p:first-child {
+  font-size: clamp(1.25rem, 2.2vw, 1.6rem);
+  line-height: 1.45;
+  letter-spacing: -0.02em;
+  color: var(--foreground);
+}
+.md-body h2,
+.md-body h3 {
+  color: var(--foreground);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  margin-top: 2.2em;
+}
+.md-body h2 { font-size: clamp(1.75rem, 3.5vw, 2.5rem); }
+.md-body h3 { font-size: clamp(1.35rem, 2.5vw, 1.75rem); }
+.md-body strong { color: var(--foreground); font-weight: 500; }
+.md-body a {
+  color: var(--foreground);
+  text-decoration: underline;
+  text-decoration-color: var(--brand);
+  text-underline-offset: 4px;
+}
+.md-body ul,
+.md-body ol { padding-left: 1.25em; }
+.md-body ul { list-style: disc; }
+.md-body ol { list-style: decimal; }
+.md-body li + li { margin-top: 0.4em; }
+.md-body li::marker { color: var(--brand); }
+.md-body blockquote {
+  margin-block: 2.5em;
+  border-left: 2px solid var(--brand);
+  padding-left: 1.25em;
+  font-family: var(--font-instrument-serif);
+  font-style: italic;
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  line-height: 1.25;
+  color: var(--foreground);
+}
+.md-body code {
+  font-family: var(--font-geist-mono);
+  font-size: 0.85em;
+  background: var(--surface);
+  padding: 0.15em 0.4em;
+  border-radius: 0.35em;
+}
+.md-body pre {
+  background: var(--surface);
+  padding: 1.25em;
+  border-radius: 1rem;
+  overflow-x: auto;
+}
+.md-body pre code { background: none; padding: 0; }
+.md-body hr { border-color: var(--line); margin-block: 3em; }
+.md-body table { width: 100%; font-size: 0.95em; border-collapse: collapse; }
+.md-body th,
+.md-body td { border-bottom: 1px solid var(--line); padding: 0.6em 0.5em; text-align: left; }

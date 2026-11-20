@@ -1,99 +1,31 @@
-"use client";
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { PROJECTS } from "@/data/content";
-import ProjectCard from "@/components/project/ProjectCard";
-import PageTitle from "@/components/shared/PageTitle";
-import { cn } from "@/lib/utils";
+import type { Metadata } from "next";
+import Link from "next/link";
+import PageHeader from "@/components/shared/PageHeader";
+import ProjectsArchive from "@/components/project/ProjectsArchive";
+import { getProjects } from "@/lib/content";
+import { WORK_PAGE, PAGE_SEO } from "@/content/site";
+import { pageMetadata, breadcrumbJsonLd } from "@/lib/seo";
+import JsonLd from "@/components/shared/JsonLd";
 
-const CATEGORIES = ["All", "Web", "AI", "Games"];
+export const metadata: Metadata = pageMetadata({ ...PAGE_SEO.work, path: "/projects" });
 
 export default function ProjectsPage() {
-  const [filter, setFilter] = useState("All");
-
-  // Filter logic based on techStack or name for now
-  const filteredProjects = PROJECTS.filter((project) => {
-    if (filter === "All") return true;
-    if (filter === "AI")
-      return project.techStack.some(
-        (t) => t.includes("AI") || t.includes("Python"),
-      );
-    if (filter === "Games")
-      return project.id.includes("game") || project.techStack.includes("Godot");
-    if (filter === "Web")
-      return (
-        project.techStack.includes("Next.js") ||
-        project.techStack.includes("React")
-      );
-    return true;
-  });
+  const projects = getProjects();
 
   return (
-    <main className="min-h-screen pt-40 pb-20">
-      <div className="container-custom">
-        <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-10 mb-20">
-          <div>
-            <PageTitle title="Selected Works" subtitle="Archive" />
-            <p className="text-neutral-500 dark:text-neutral-400 mt-6 max-w-md text-lg">
-              A collection of digital experiences, AI experiments, and
-              interactive games built between 2024 and 2026.
-            </p>
-          </div>
+    <main className="pb-28 md:pb-40">
+      <JsonLd data={breadcrumbJsonLd([{ name: "Work", path: "/projects" }])} />
+      <PageHeader eyebrow={WORK_PAGE.eyebrow} headline={WORK_PAGE.headline} intro={WORK_PAGE.intro} />
+      <ProjectsArchive projects={projects} />
 
-          {/* Category Filter */}
-          <div className="flex flex-wrap gap-3">
-            {CATEGORIES.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setFilter(cat)}
-                className={cn(
-                  "px-6 py-2 rounded-full border text-[10px] uppercase tracking-widest font-bold transition-all",
-                  filter === cat
-                    ? "bg-black text-white border-black dark:bg-white dark:text-black dark:border-white"
-                    : "border-black/10 dark:border-white/10 text-neutral-500 hover:border-black dark:hover:border-white",
-                )}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-        </header>
-
-        {/* Projects Grid */}
-        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-16 md:gap-y-24">
-          <AnimatePresence mode="popLayout">
-            {filteredProjects.map((project, i) => {
-              // Option A: Use the current filtered position (1st visible is 01, 2nd is 02)
-              const currentIndex = i;
-
-              return (
-                <ProjectCard
-                  key={project.id}
-                  project={project}
-                  index={currentIndex}
-                  featured={currentIndex === 0}
-                />
-              );
-            })}
-          </AnimatePresence>
-        </motion.div>
-
-        {/* Footer CTA */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          className="mt-40 text-center py-20 border-t border-black/5 dark:border-white/5"
+      <div className="container-custom mt-28 md:mt-40 border-t border-line pt-16 text-center">
+        <h3 className="text-3xl md:text-5xl font-medium tracking-[-0.04em] mb-6">Have a unique idea?</h3>
+        <Link
+          href="/contact"
+          className="inline-flex h-14 items-center rounded-full bg-brand px-8 font-medium text-brand-foreground transition-transform hover:scale-105"
         >
-          <h3 className="text-3xl font-bold tracking-tighter mb-6">
-            Have a unique idea?
-          </h3>
-          <a
-            href="/contact"
-            className="text-sm font-mono uppercase tracking-[0.3em] underline decoration-neutral-300 underline-offset-8 hover:text-neutral-500 transition-colors"
-          >
-            Start a project with me
-          </a>
-        </motion.div>
+          Start a project with me
+        </Link>
       </div>
     </main>
   );

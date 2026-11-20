@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { PERSON } from "@/content/site";
 
 export default function LocalTime({ className }: { className?: string }) {
   const [time, setTime] = useState<string | null>(null);
@@ -7,7 +8,7 @@ export default function LocalTime({ className }: { className?: string }) {
   useEffect(() => {
     const fmt = () =>
       new Date().toLocaleTimeString("en-US", {
-        timeZone: "Asia/Dhaka",
+        timeZone: PERSON.timeZone,
         hour: "2-digit",
         minute: "2-digit",
         hour12: true,
@@ -22,7 +23,7 @@ export default function LocalTime({ className }: { className?: string }) {
 
   return (
     <span className={className} suppressHydrationWarning>
-      {time ?? "--:-- --"} GMT+6
+      {time ?? "--:-- --"} {PERSON.timeZoneLabel}
     </span>
   );
 }

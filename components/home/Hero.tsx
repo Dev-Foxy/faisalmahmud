@@ -4,7 +4,8 @@ import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
 import HeroImage from "@/lib/hero.png";
-import { PERSONAL_INFO } from "@/data/content";
+import { PERSON, HOME } from "@/content/site";
+import { Accent, accentLines } from "@/components/shared/Accent";
 import { MaskLines, Magnetic, RollText, EASE } from "@/components/shared/motion";
 import LocalTime from "@/components/shared/LocalTime";
 
@@ -23,15 +24,19 @@ export default function Hero() {
           transition={{ duration: 1, delay: 0.6 }}
           className="flex flex-wrap items-center justify-between gap-4 mb-10 md:mb-14"
         >
-          <span className="inline-flex items-center gap-2.5 rounded-full border border-line px-4 py-2 text-sm">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-60" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+          {PERSON.available ? (
+            <span className="inline-flex items-center gap-2.5 rounded-full border border-line px-4 py-2 text-sm">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-60" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+              </span>
+              {PERSON.availability}
             </span>
-            {PERSONAL_INFO.availability}
-          </span>
+          ) : (
+            <span />
+          )}
           <span className="label text-muted-foreground hidden sm:block">
-            {PERSONAL_INFO.role}
+            {PERSON.role}
           </span>
         </motion.div>
 
@@ -40,19 +45,11 @@ export default function Hero() {
           style={{ y: titleY }}
           className="text-[clamp(3.25rem,11.5vw,12.5rem)] font-medium leading-[0.86] tracking-[-0.055em]"
         >
-          <MaskLines
-            delay={0.1}
-            lines={[
-              "Design-led",
-              <>
-                websites{" "}
-                <span className="font-serif italic font-normal tracking-[-0.02em] text-brand">
-                  that
-                </span>
-              </>,
-              "grow brands.",
-            ]}
-          />
+          {/* The kicker is part of the H1 so Google reads "Freelance web developer in Bangladesh" as the main heading */}
+          <span className="block label text-muted-foreground font-normal tracking-[0.14em] mb-5 md:mb-7">
+            {PERSON.name} — {HOME.hero.kicker}
+          </span>
+          <MaskLines delay={0.1} lines={accentLines(HOME.hero.headline)} />
         </motion.h1>
 
         {/* Bottom row */}
@@ -64,25 +61,23 @@ export default function Hero() {
             className="md:col-span-5 lg:col-span-4"
           >
             <p className="text-lg md:text-xl leading-snug tracking-tight text-muted-foreground max-w-md">
-              I’m <span className="text-foreground">Faisal</span> — a designer
-              who codes. I build fast, distinctive websites, web apps and
-              AI-powered products for brands that want to stand out.
+              <Accent text={HOME.hero.intro} />
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <Magnetic>
                 <Link
-                  href="/contact"
+                  href={HOME.hero.primaryCta.href}
                   className="group inline-flex h-14 items-center gap-2 rounded-full bg-brand px-7 text-base font-medium text-brand-foreground"
                 >
-                  <RollText>Start a project</RollText>
+                  <RollText>{HOME.hero.primaryCta.label}</RollText>
                   <ArrowUpRight size={18} className="transition-transform duration-500 group-hover:rotate-45" />
                 </Link>
               </Magnetic>
               <Link
-                href="#work"
+                href={HOME.hero.secondaryCta.href}
                 className="group inline-flex h-14 items-center gap-2 rounded-full border border-line px-7 text-base hover:bg-foreground hover:text-background transition-colors duration-300"
               >
-                <RollText>See my work</RollText>
+                <RollText>{HOME.hero.secondaryCta.label}</RollText>
               </Link>
             </div>
           </motion.div>
@@ -97,7 +92,7 @@ export default function Hero() {
             <motion.div style={{ y: imgY }} className="absolute inset-x-0 -top-[12%] h-[124%]">
               <Image
                 src={HeroImage}
-                alt="Portrait of Faisal Mahmud"
+                alt={`Portrait of ${PERSON.name}`}
                 fill
                 priority
                 placeholder="blur"
@@ -115,7 +110,7 @@ export default function Hero() {
           >
             <div>
               <p className="label text-muted-foreground mb-1">Based in</p>
-              <p className="text-sm">{PERSONAL_INFO.location}</p>
+              <p className="text-sm">{PERSON.location}</p>
               <LocalTime className="text-sm text-muted-foreground" />
             </div>
             <a

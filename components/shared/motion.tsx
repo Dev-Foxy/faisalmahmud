@@ -70,22 +70,26 @@ export function FadeUp({
   className,
   delay = 0,
   y = 24,
+  inline = false,
 }: {
   children: React.ReactNode;
   className?: string;
   delay?: number;
   y?: number;
+  /** Render a block-level <span> instead of a <div> (valid inside headings) */
+  inline?: boolean;
 }) {
+  const Tag = inline ? motion.span : motion.div;
   return (
-    <motion.div
-      className={className}
+    <Tag
+      className={cn(inline && "block", className)}
       initial={{ opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-8%" }}
       transition={{ duration: 0.9, ease: EASE, delay }}
     >
       {children}
-    </motion.div>
+    </Tag>
   );
 }
 

@@ -3,7 +3,8 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ArrowUpRight, ArrowUp, Copy, Check } from "lucide-react";
-import { PERSONAL_INFO, SOCIALS } from "@/data/content";
+import { PERSON, SOCIALS, FOOTER } from "@/content/site";
+import { accentLines } from "@/components/shared/Accent";
 import { MaskLines, Magnetic, RollText } from "@/components/shared/motion";
 import LocalTime from "@/components/shared/LocalTime";
 
@@ -15,11 +16,11 @@ export default function Footer() {
 
   const copyEmail = async () => {
     try {
-      await navigator.clipboard.writeText(PERSONAL_INFO.email);
+      await navigator.clipboard.writeText(PERSON.email);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      window.location.href = `mailto:${PERSONAL_INFO.email}`;
+      window.location.href = `mailto:${PERSON.email}`;
     }
   };
 
@@ -29,20 +30,12 @@ export default function Footer() {
         <div className="container-custom pt-24 md:pt-36 pb-16 md:pb-24">
           <div className="flex items-center gap-3 label opacity-60 mb-8 md:mb-12">
             <span className="h-2 w-2 rounded-full bg-brand" />
-            Have a project in mind?
+            {FOOTER.eyebrow}
           </div>
 
           <div className="relative">
             <h2 className="text-[clamp(3.5rem,13vw,13rem)] font-medium leading-[0.86] tracking-[-0.05em]">
-              <MaskLines
-                onView
-                lines={[
-                  "Let’s work",
-                  <span key="t" className="font-serif italic font-normal tracking-[-0.02em] text-brand">
-                    together
-                  </span>,
-                ]}
-              />
+              <MaskLines onView lines={accentLines(FOOTER.headline)} />
             </h2>
 
             <div className="mt-12 md:mt-0 md:absolute md:right-0 md:bottom-4">
@@ -53,7 +46,7 @@ export default function Footer() {
                   className="group grid h-36 w-36 md:h-48 md:w-48 place-items-center rounded-full bg-brand text-brand-foreground text-base md:text-lg font-medium transition-transform duration-500 ease-expo hover:scale-105"
                 >
                   <span className="flex items-center gap-1.5">
-                    Start a project
+                    {FOOTER.button}
                     <ArrowUpRight size={18} className="transition-transform duration-500 group-hover:rotate-45" />
                   </span>
                 </Link>
@@ -63,11 +56,11 @@ export default function Footer() {
 
           <div className="mt-16 md:mt-24 flex flex-col sm:flex-row sm:items-center gap-4">
             <a
-              href={`mailto:${PERSONAL_INFO.email}`}
+              href={`mailto:${PERSON.email}`}
               className="group text-xl md:text-3xl tracking-tight"
             >
               <span className="bg-[linear-gradient(currentColor,currentColor)] bg-[length:0%_1px] bg-left-bottom bg-no-repeat pb-1 transition-[background-size] duration-500 group-hover:bg-[length:100%_1px]">
-                {PERSONAL_INFO.email}
+                {PERSON.email}
               </span>
             </a>
             <button
@@ -86,7 +79,7 @@ export default function Footer() {
           <div>
             <p className="label opacity-50 mb-4">Local time</p>
             <LocalTime className="text-sm" />
-            <p className="text-sm opacity-70 mt-1">{PERSONAL_INFO.location}</p>
+            <p className="text-sm opacity-70 mt-1">{PERSON.location}</p>
           </div>
           <div>
             <p className="label opacity-50 mb-4">Menu</p>
@@ -125,7 +118,7 @@ export default function Footer() {
                 ))
               ) : (
                 <li>
-                  <a href={`mailto:${PERSONAL_INFO.email}`} className="group opacity-80 hover:opacity-100">
+                  <a href={`mailto:${PERSON.email}`} className="group opacity-80 hover:opacity-100">
                     <RollText>Email</RollText>
                   </a>
                 </li>
@@ -140,7 +133,8 @@ export default function Footer() {
             >
               <ArrowUp size={16} />
             </button>
-            <p className="label opacity-50">© {new Date().getFullYear()} Faisal Mahmud</p>
+            <p className="label opacity-50">© {new Date().getFullYear()} {PERSON.name}</p>
+            <p className="text-xs opacity-50 md:text-right max-w-56">{FOOTER.tagline}</p>
           </div>
         </div>
       </div>

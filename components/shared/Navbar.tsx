@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -11,6 +11,7 @@ import {
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import { RollText, EASE } from "@/components/shared/motion";
+import { PERSON } from "@/content/site";
 
 const navLinks = [
   { name: "Work", href: "/projects" },
@@ -23,20 +24,35 @@ export default function Navbar() {
   const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  
   const { resolvedTheme, setTheme } = useTheme();
   const { scrollY } = useScroll();
   const pathname = usePathname();
+  const anchorY = useRef(0);
 
-
+  // Lock page scroll while the mobile menu is open
   useEffect(() => {
     document.documentElement.style.overflow = open ? "hidden" : "";
+    return () => {
+      document.documentElement.style.overflow = "";
+    };
   }, [open]);
 
-  useMotionValueEvent(scrollY, "change", (y) => {
-    const prev = scrollY.getPrevious() ?? 0;
-    setHidden(y > prev && y > 200);
+  useMotionValueEvent(scrollY, "change", (raw) => {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    // Clamp iOS rubber-band overscroll (negative / beyond-bottom values)
+    const y = Math.min(Math.max(raw, 0), Math.max(max, 0));
     setScrolled(y > 40);
+
+    if (y < 120) {
+      setHidden(false);
+      anchorY.current = y;
+      return;
+    }
+    // Only react after a deliberate scroll (~12px) to avoid flicker from tiny jitters
+    const delta = y - anchorY.current;
+    if (Math.abs(delta) < 12) return;
+    setHidden(delta > 0);
+    anchorY.current = y;
   });
 
   const toggleTheme = () =>
@@ -60,10 +76,11 @@ export default function Navbar() {
           <nav className="container-custom flex h-16 md:h-20 items-center justify-between">
             <Link
               href="/"
+              onClick={() => setOpen(false)}
               className="group relative z-10 flex items-center gap-2 text-[15px] font-medium tracking-tight"
             >
               <span className="inline-block h-2.5 w-2.5 rounded-full bg-brand transition-transform duration-500 group-hover:scale-150" />
-              <RollText>Faisal Mahmud</RollText>
+              <RollText>{PERSON.name}</RollText>
             </Link>
 
             <div className="hidden md:flex items-center gap-10">
@@ -160,7 +177,7 @@ export default function Navbar() {
               )}
             </div>
             <div className="container-custom label text-muted-foreground">
-              Dhaka, Bangladesh — Working worldwide
+              {PERSON.location} — Working worldwide
             </div>
           </motion.div>
         )}

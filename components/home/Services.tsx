@@ -1,7 +1,8 @@
 "use client";
 import { motion } from "framer-motion";
 import SectionHeading from "@/components/shared/SectionHeading";
-import { SERVICES } from "@/data/content";
+import { SERVICES, HOME } from "@/content/site";
+import { Accent } from "@/components/shared/Accent";
 import { EASE } from "@/components/shared/motion";
 
 export default function Services() {
@@ -10,14 +11,7 @@ export default function Services() {
       <SectionHeading
         index="02"
         label="Services"
-        title={
-          <>
-            Everything you need to{" "}
-            <span className="font-serif italic font-normal tracking-[-0.02em]">
-              launch
-            </span>
-          </>
-        }
+        title={<Accent text={HOME.servicesTitle} color={false} />}
       />
 
       <ul className="border-b border-line">

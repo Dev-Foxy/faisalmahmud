@@ -1,21 +1,12 @@
 "use client";
 import { VelocityMarquee } from "@/components/shared/motion";
-
-const ITEMS = [
-  "Web Design",
-  "Development",
-  "E-commerce",
-  "AI Agents",
-  "Web Apps",
-  "Motion",
-  "Branding",
-];
+import { HOME } from "@/content/site";
 
 export default function Marquee() {
   return (
     <section aria-label="Services" className="border-y border-line py-6 md:py-8">
       <VelocityMarquee baseVelocity={-1.5}>
-        {ITEMS.map((item) => (
+        {HOME.marquee.map((item) => (
           <span
             key={item}
             className="flex items-center text-[clamp(2rem,5vw,4.5rem)] font-medium tracking-[-0.04em] leading-none"

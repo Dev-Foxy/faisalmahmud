@@ -11,7 +11,7 @@ import { EASE } from "@/components/shared/motion";
 interface ProjectCardProps {
   project: Project;
   index: number;
-  /** Wide 16:9 stage, used for the lead project */
+  /** Wide stage, used for the lead project */
   featured?: boolean;
 }
 
@@ -22,8 +22,6 @@ export default function ProjectCard({ project, index, featured = false }: Projec
     offset: ["start end", "end start"],
   });
   const y = useTransform(scrollYProgress, [0, 1], ["-6%", "6%"]);
-  const image = project.images[0];
-  const ink = project.ink ?? "#0f0f0e";
 
   return (
     <motion.div
@@ -33,28 +31,20 @@ export default function ProjectCard({ project, index, featured = false }: Projec
       transition={{ duration: 1.1, ease: EASE, delay: featured ? 0 : (index % 2) * 0.1 }}
       className={cn(featured && "md:col-span-2")}
     >
-      <Link
-        ref={ref}
-        href={`/projects/${project.id}`}
-        data-cursor="View"
-        className="group block"
-      >
+      <Link ref={ref} href={`/projects/${project.slug}`} data-cursor="View" className="group block">
         <div
           className={cn(
             "relative overflow-hidden rounded-2xl",
-            featured ? "aspect-[4/5] sm:aspect-[16/10] lg:aspect-[16/8]" : "aspect-[4/5]",
+            featured ? "aspect-4/5 sm:aspect-16/10 lg:aspect-16/8" : "aspect-4/5",
           )}
-          style={{ backgroundColor: project.color ?? "var(--surface)" }}
+          style={{ backgroundColor: project.color }}
         >
-          <motion.div
-            style={{ y }}
-            className="absolute inset-0 flex items-center justify-center p-[9%]"
-          >
-            {image ? (
+          <motion.div style={{ y }} className="absolute inset-0 flex items-center justify-center p-[9%]">
+            {project.cover ? (
               <div className="relative h-full w-full transition-transform duration-[1.2s] ease-expo group-hover:scale-[1.04]">
                 <Image
-                  src={image.src}
-                  alt={image.alt}
+                  src={project.cover}
+                  alt={project.coverAlt ?? project.title}
                   fill
                   sizes={featured ? "100vw" : "(max-width: 768px) 100vw, 50vw"}
                   className="object-contain drop-shadow-[0_30px_40px_rgba(0,0,0,0.35)]"
@@ -62,23 +52,20 @@ export default function ProjectCard({ project, index, featured = false }: Projec
               </div>
             ) : (
               <span
-                className="font-serif italic text-[clamp(3rem,9vw,8rem)] leading-none tracking-[-0.03em] transition-transform duration-[1.2s] ease-expo group-hover:scale-[1.06]"
-                style={{ color: ink }}
+                className="text-center font-serif italic text-[clamp(3rem,9vw,8rem)] leading-none tracking-[-0.03em] transition-transform duration-[1.2s] ease-expo group-hover:scale-[1.06]"
+                style={{ color: project.ink }}
               >
-                {project.name}
+                {project.title}
               </span>
             )}
           </motion.div>
 
-          <div
-            className="absolute left-5 top-5 hidden sm:flex gap-2 label"
-            style={{ color: ink }}
-          >
-            {project.techStack.slice(0, 3).map((t) => (
+          <div className="absolute left-5 top-5 hidden sm:flex gap-2 label" style={{ color: project.ink }}>
+            {project.stack.slice(0, 3).map((t) => (
               <span
                 key={t}
                 className="rounded-full border px-3 py-1.5 backdrop-blur-sm"
-                style={{ borderColor: `${ink}33` }}
+                style={{ borderColor: `${project.ink}33` }}
               >
                 {t}
               </span>
@@ -87,13 +74,9 @@ export default function ProjectCard({ project, index, featured = false }: Projec
         </div>
 
         <div className="mt-5 flex items-start justify-between gap-6">
-          <div>
-            <h3 className="text-2xl md:text-4xl font-medium tracking-[-0.04em] leading-tight">
-              {project.name}
-            </h3>
-            <p className="mt-2 max-w-xl text-muted-foreground leading-snug line-clamp-2">
-              {project.description}
-            </p>
+          <div className="min-w-0">
+            <h3 className="text-2xl md:text-4xl font-medium tracking-[-0.04em] leading-tight">{project.title}</h3>
+            <p className="mt-2 max-w-xl text-muted-foreground leading-snug line-clamp-2">{project.summary}</p>
           </div>
           <div className="flex shrink-0 items-center gap-4">
             <span className="hidden sm:block label text-muted-foreground text-right">

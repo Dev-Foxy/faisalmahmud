@@ -1,7 +1,8 @@
 "use client";
 import { motion } from "framer-motion";
 import SectionHeading from "@/components/shared/SectionHeading";
-import { PROCESS } from "@/data/content";
+import { PROCESS, HOME } from "@/content/site";
+import { Accent } from "@/components/shared/Accent";
 import { EASE } from "@/components/shared/motion";
 
 export default function Process() {
@@ -10,15 +11,7 @@ export default function Process() {
       <SectionHeading
         index="04"
         label="Process"
-        title={
-          <>
-            A clear path from{" "}
-            <span className="font-serif italic font-normal tracking-[-0.02em]">
-              idea
-            </span>{" "}
-            to launch
-          </>
-        }
+        title={<Accent text={HOME.processTitle} color={false} />}
       />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
